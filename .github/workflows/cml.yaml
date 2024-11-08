@@ -17,7 +17,7 @@ jobs:
               --cloud-region=us-central1-a \
               --cloud-type=m+t4 \
               --labels=cml-gpu \
-              --cloud-image=deeplearning-platform-release/common-cu123 \
+              --cloud-image=debian@ml-images/c0-deeplearning-common-gpu \
               --cloud-spot
   train-and-report:
     needs: launch-runner
