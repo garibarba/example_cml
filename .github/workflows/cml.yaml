@@ -19,7 +19,7 @@ jobs:
               --labels=cml-gpu \
               --cloud-image=deeplearning-platform-release/pytorch-latest-gpu-ubuntu-2004 \
               --cloud-hdd-size=100 \
-              --cloud-metadata="install-nvidia-driver=True" \
+              --cloud-metadata=install-nvidia-driver=True \
               --cloud-spot
   train-and-report:
     needs: launch-runner
