@@ -18,7 +18,7 @@ jobs:
               --cloud-type=m+t4 \
               --labels=cml-gpu \
               --cloud-image=deeplearning-platform-release/pytorch-latest-gpu \
-              --cloud-hdd-size=100 \ 
+              --cloud-hdd-size=100 \
               --cloud-spot
   train-and-report:
     needs: launch-runner
