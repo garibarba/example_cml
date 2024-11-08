@@ -2,7 +2,7 @@ name: CML
 on: [push]
 jobs:
   launch-runner:
-    runs-on: nvidia-latest
+    runs-on: ubuntu-latest
     # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
       - uses: iterative/setup-cml@v1
@@ -17,6 +17,7 @@ jobs:
               --cloud-region=us-central1-a \
               --cloud-type=m+t4 \
               --labels=cml-gpu \
+              --cloud-image=nvidia \
               --cloud-spot
   train-and-report:
     needs: launch-runner
