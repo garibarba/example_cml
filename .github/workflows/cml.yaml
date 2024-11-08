@@ -17,7 +17,7 @@ jobs:
               --cloud-region=us-central1-a \
               --cloud-type=m+t4 \
               --labels=cml-gpu \
-              --cloud-image=ml-images/pytorch-latest-gpu \
+              --cloud-image=deeplearning-platform-release/pytorch-latest-gpu \
               --cloud-spot
   train-and-report:
     needs: launch-runner
