@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import json
 import os
 import numpy as np
+import torch
 
 # Read in data
 X_train = np.genfromtxt("data/train_features.csv")
@@ -20,6 +21,7 @@ acc = clf.score(X_test, y_test)
 print(acc)
 with open("metrics.txt", "w") as outfile:
     outfile.write("Accuracy: " + str(acc) + "\n")
+    outfile.write(f"torch.cuda.is_available(): {torch.cuda.is_available()} \n")
 
 # Plot it
 disp = ConfusionMatrixDisplay.from_estimator(
