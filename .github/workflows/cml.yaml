@@ -1,0 +1,44 @@
+name: CML
+on: [push]
+jobs:
+  launch-runner:
+    runs-on: ubuntu-latest
+    # container: docker://ghcr.io/iterative/cml:0-dvc2-base1
+    steps:
+      - uses: iterative/setup-cml@v1
+      - uses: actions/checkout@v3
+      - name: Deploy runner on GCP
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
+        run: |
+          cml runner launch \
+              --cloud=gcp \
+              --cloud-region=us-central1-a \
+              --cloud-type=m+t4 \
+              --labels=cml-gpu \
+              --cloud-image=deeplearning-platform-release/pytorch-latest-gpu-ubuntu-2004 \
+              --cloud-hdd-size=100 \
+              --cloud-metadata=install-nvidia-driver=true \
+              --cloud-startup-script=IyEvYmluL2Jhc2gKCmVjaG8gImhlbGxvIHdvcmxkIgo= \
+              --cloud-spot
+  train-and-report:
+    needs: launch-runner
+    runs-on: [self-hosted, cml-gpu]
+    timeout-minutes: 50400 # 35 days
+    container:
+      image: docker://iterativeai/cml:0-dvc2-base1-gpu
+      options: --gpus all
+    steps:
+      - uses: actions/checkout@v3
+      - name: Train model
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          pip install -r requirements.txt
+          python train.py  # generate plot.png
+
+          # Create CML report
+          cat metrics.txt >> report.md
+          echo '![](./plot.png "Confusion Matrix")' >> report.md
+          cml comment create --target=pr report.md
