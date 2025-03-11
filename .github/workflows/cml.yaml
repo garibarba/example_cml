@@ -35,8 +35,8 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          pip install -r requirements.txt
-          python train.py  # generate plot.png
+          pip install uv
+          uv run train.py  # generate plot.png
 
           # Create CML report
           cat metrics.txt >> report.md
