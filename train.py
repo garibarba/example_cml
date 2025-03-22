@@ -5,6 +5,7 @@ import json
 import os
 import numpy as np
 import torch
+import jax
 
 # Read in data
 X_train = np.genfromtxt("data/train_features.csv")
@@ -22,6 +23,7 @@ print(acc)
 with open("metrics.txt", "w") as outfile:
     outfile.write("Accuracy: " + str(acc) + "\n")
     outfile.write(f"torch.cuda.is_available(): {torch.cuda.is_available()} \n")
+    outfile.write(f"jax.default_backend(): {jax.default_backend()} \n")
 
 # Plot it
 disp = ConfusionMatrixDisplay.from_estimator(
